@@ -1,0 +1,21 @@
+.icono{
+    text-align: center;
+    padding: 2rem;
+    img{
+        height: 10rem;
+    }
+    h3{
+        font-weight: $bold;
+        text-align: center;
+        margin-top: 1rem;
+        text-transform: uppercase;
+    }
+
+
+}
+
+.iconos-nosotros{
+    @include tablet {
+        @include grid(3, 2rem);        
+    }
+}

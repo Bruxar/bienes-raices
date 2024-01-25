@@ -1,5 +1,6 @@
 .footer{
     background-color: $grisOscuro;
+    margin: 0;
 
     .contenedor-footer{
         padding: calc($separacion/2);
@@ -10,5 +11,6 @@
     .copyright{
         color: $blanco;
         text-align: center;
+        margin: 0;
     }
 }
