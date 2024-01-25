@@ -32,8 +32,10 @@
     margin-top: calc($separacion / 2);
     border-radius: 5px;
     display: $display;
+    border: none;
 
     &:hover{
         background-color: darken($bgColor, 5);
+        cursor: pointer;
     }
 }
