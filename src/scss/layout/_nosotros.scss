@@ -1,0 +1,20 @@
+.nosotros{
+    @include tablet{
+        @include grid(2, 4rem);
+        align-items: center;
+    }
+    h3{
+        text-align: left;
+        margin-bottom: 2rem;
+        font-weight: $bold;
+
+        &::after{
+            content: '';
+            display: block;
+            width: 15rem;
+            height: .5rem;
+            background-color: $verde;
+            margin-top: 1rem;
+        }
+    }
+}
