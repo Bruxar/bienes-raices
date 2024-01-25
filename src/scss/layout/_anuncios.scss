@@ -7,12 +7,22 @@
 .anuncio{
     background-color: lighten($gris, 7);
     border: 1px solid darken($gris, 10);
+    border-radius: 1rem;
+
+    picture img{
+        border-radius: 1rem 1rem 0 0;
+    }
 
     .contenido-anuncio{
         padding: 2rem;
     }
     h3,p{
         margin: 0;
+    }
+    h3{
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
     }
     .precio{
         color: $verde;
@@ -26,9 +36,15 @@
     list-style: none;
     padding: 0;
 
+    ul{
+        display: flex;
+        justify-content: center;
+    }
+
     li{
         flex: 1;
         display: flex;
+        justify-content: center;
         img{
             flex: 0 0 3rem;
             margin-right: 1rem;
