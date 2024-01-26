@@ -1,14 +1,24 @@
 <?php
     //Base de datos
-
     require '../../includes/config/database.php';
     $db = conectarDB();
+
+    //Consultar vendedores
+    $consulta = "SELECT * FROM vendedores";
+    $resultado = mysqli_query($db, $consulta);
 
     //Arreglo con mensajes de errores
     $errores = [];
     
-
-
+    $titulo = $_POST[''];
+    $precio = $_POST[''];
+    $descripcion = $_POST[''];
+    $habitaciones = $_POST[''];
+    $wc = $_POST[''];
+    $estacionamiento = $_POST[''];
+    $vendedorId = $_POST[''];
+    $creado = date('Y/m/d');
+    
     //Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
@@ -16,13 +26,13 @@
         // var_dump($_POST);
         // echo "</pre>";
 
-        $titulo = $_POST[''];
-        $precio = $_POST[''];
-        $descripcion = $_POST[''];
-        $habitaciones = $_POST[''];
-        $wc = $_POST[''];
-        $estacionamiento = $_POST[''];
-        $vendedor = $_POST[''];
+        $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
+        $precio = mysqli_real_escape_string($db, $_POST['precio']);
+        $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
+        $habitaciones = mysqli_real_escape_string($db, $_POST['habitaciones']);
+        $wc = mysqli_real_escape_string($db, $_POST['wc']);
+        $estacionamiento = mysqli_real_escape_string($db, $_POST['estacionamiento']);
+        $vendedorId = mysqli_real_escape_string($db, $_POST['vendedor']);
 
         if(!$titulo){
             $errores[] = "Debes añadir un titulo";
@@ -42,20 +52,21 @@
         if(!$estacionamiento){
             $errores[] = "Debes añadir estacionamiento";
         }
-        if(!$vendedor){
+        if(!$vendedorId){
             $errores[] = "Debes elegir un vendedor";
         }
 
 
         if(empty($errores)){
             //Insertar en la base de datos
-            $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedores_id) 
-            VALUES ('$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedor')";
+            $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id) 
+            VALUES ('$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedorId')";
 
             $resultado = mysqli_query($db, $query);
 
             if($resultado){
-                echo "Insertado Correctamente";
+                //Redireccionar al usuario
+                header('Location: /admin');
             }
         }
 }
@@ -81,29 +92,29 @@
                 <legend>Informacion General</legend>
 
                 <label for="titulo">Titulo: </label>
-                <input type="text" id="titulo" name="titulo" placeholder="Titulo Propiedad">
+                <input type="text" id="titulo" name="titulo" placeholder="Titulo Propiedad" value="<?php echo $titulo; ?>">
 
                 <label for="precio">Precio: </label>
-                <input type="number" min="0" id="precio" name="precio" placeholder="Precio Propiedad">
+                <input type="number" min="0" id="precio" name="precio" placeholder="Precio Propiedad" value="<?php echo $precio; ?>">
 
                 <label for="imagen">Imagen: </label>
                 <input type="file" id="imagen" accept="image/jpeg, image/png">
 
                 <label for="descripcion">Descripcion: </label>
-                <textarea id="descripcion" name="descripcion"></textarea>
+                <textarea id="descripcion" name="descripcion"> <?php echo $descripcion; ?> </textarea>
             </fieldset>
 
             <fieldset>
                 <legend>Informacion Propiedad</legend>
 
                 <label for="habitaciones">Habitaciones: </label>
-                <input type="number" min="1" max="9" id="habitaciones" name="habitaciones" placeholder="Ej: 3">
+                <input type="number" min="1" max="9" id="habitaciones" name="habitaciones" placeholder="Ej: 3" value="<?php echo $habitaciones; ?>">
 
                 <label for="wc">Baños: </label>
-                <input type="number" min="1" max="9" id="wc" name="wc" placeholder="Ej: 2">
+                <input type="number" min="1" max="9" id="wc" name="wc" placeholder="Ej: 2" value="<?php echo $wc; ?>">
 
                 <label for="estacionamiento">Estacionamiento: </label>
-                <input type="number" min="1" max="9" id="estacionamiento" name="estacionamiento" placeholder="Ej: 3">
+                <input type="number" min="1" max="9" id="estacionamiento" name="estacionamiento" placeholder="Ej: 3" value="<?php echo $estacionamiento; ?>">
             </fieldset>
 
             <fieldset>
@@ -111,8 +122,9 @@
 
                 <select name="vendedor">
                     <option value="">--Seleccione--</option>
-                    <option value="1">Juan</option>
-                    <option value="2">Karen</option>
+                    <?php while($vendedor = mysqli_fetch_assoc($resultado)): ?>
+                        <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>"> <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?> </option>
+                    <?php endwhile; ?>
                 </select>
             </fieldset>
             <input type="submit" value="Crear Propiedad" class="boton boton-verde">
