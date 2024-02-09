@@ -1,5 +1,12 @@
 <?php
 
+require '../includes/funciones.php';
+$auth = estaAutenticado();
+
+if(!$auth){
+    header('Location: /');
+}
+
     //Importar conexion
     require '../includes/config/database.php';
     $db = conectarDB();
@@ -19,13 +26,13 @@
 
         if($id){
             //Eliminar archivo
-            $query = "SELECT imagen FROM propiedades WHERE id = ${id}";
+            $query = "SELECT imagen FROM propiedades WHERE id = {$id}";
             $resultado = mysqli_query($db, $query);
             $propiedad = mysqli_fetch_assoc($resultado);
             unlink('../imagenes/' . $propiedad['imagen']);
 
             //Eliminar propiedad
-            $query = "DELETE FROM propiedades WHERE id = ${id}";
+            $query = "DELETE FROM propiedades WHERE id = {$id}";
             $resultado = mysqli_query($db, $query);
 
             if($resultado){
@@ -35,7 +42,7 @@
     }
 
     //Incluye template
-    require '../includes/funciones.php';
+
     incluirTemplate('header');
 ?>
 

@@ -1,4 +1,12 @@
 <?php
+
+require '../../includes/funciones.php';
+$auth = estaAutenticado();
+
+if(!$auth){
+    header('Location: /');
+}
+
 //Validar ID en la URL
 $id = $_GET['id'];
 $id = filter_var($id, FILTER_VALIDATE_INT);
@@ -13,7 +21,7 @@ $db = conectarDB();
 
 //Obtener datos de propiedad por ID
 
-$consulta = "SELECT * FROM propiedades WHERE id = ${id}";
+$consulta = "SELECT * FROM propiedades WHERE id = {$id}";
 $resultado = mysqli_query($db, $consulta);
 $propiedad = mysqli_fetch_assoc($resultado);
 
@@ -131,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-require '../../includes/funciones.php';
+
 incluirTemplate('header');
 ?>
 

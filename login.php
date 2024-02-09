@@ -29,10 +29,18 @@
 
                 if($auth){
                     //Usuario autenticado
+                    session_start();
+                    
+                    //Llenar arreglo de la sesion
+                    $_SESSION['usuario'] = $usuario['email'];
+                    $_SESSION['login'] = true;
+
+                    header('Location: /admin');
+
                 }else{
                     $errores[] = "El password es incorrecto";
                 }
-                
+
             }else{
                 $errores[] = "El Usuario no existe";
             }
